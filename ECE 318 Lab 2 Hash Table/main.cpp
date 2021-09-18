@@ -29,53 +29,69 @@ unsigned int hashf(string s)
     //    h = -h;
     return h;
 }
-
+//code state name                                               pop         area      long      lat     xroad   xdist
+// 64200100PAAaronsburg                                           485      0.520877 40.900946 -77.453383 7795  7.6972
 
 vector<town> readFile(istream& stream)
 {
     string line;
-    vector<string> lines;
-    vector<town> out;
-    
-    town t;
 
-    int n = 0;
+
+    vector<town> out;
+
     while (getline(stream, line))
     {
-        //if (!stream.eof())
-        if (n < 2)
+        if (!stream.eof())
         {
-            //line += "\n\n";
-            cout << line;
-            lines.push_back(line);
+            string parse;
+            string parsed;
 
-            // loop through characters
-            // 0 - 7 : numeric code
-            // 8 - 9 : state
-            // t.state =
-            //cout << line.substr(8, 9);
+            string others;
 
-            //for (int i = 0; i < line.length(); i++)
-            //{
-            //    //cout << line;
-            //        string code;
-            //        //t.code = line[0] + line[1] + line[2] + line[3] + line[4] + line[5] + line[6] + line[7];
-            //        //cout << t.code;
-            //    
-            //}
+            //line += "\n";
+            parse += line;
+            town t;
 
-            n += 1;
+            string x = line;
+
+            istringstream iss;
+
+            for (int i = 0; i < line.size(); i++)
+            {
+                if (i < 40)
+                    parsed += parse[i];
+                else
+                    others += parse[i];
+            }
+ 
+            iss.str(others);
+            iss >> t.pop >> t.area >> t.longitude >> t.latitude >> t.xRoad >> t.xDist;
+
+            string code, state, name;
+            for (int i = 0; i < parsed.length(); i++)
+            {
+                if (i < 8)
+                    code += parsed[i];
+                else if (i < 10)
+                    state += parsed[i];
+                else
+                    name += parsed[i];
+            }
+
+            t.code = std::stoi(code);
+            t.state = state;
+            t.name = name;
+
+            out.push_back(t);
         }
-        out.push_back(t);
     }
-
-    for (int i = 0; i < 1; i++)
-    {
-        cout << lines[i];// .substr(8, 9);
-    }
-
+    //cout << out.size();
     //for (int i = 0; i < out.size(); i++)
-    //    cout << out[i].code;
+    //{
+    //    cout << out[i].code << " " << out[i].state << " " << out[i].name << " " << out[i].pop << " "
+    //        << out[i].area << " " << out[i].longitude << " " << out[i].latitude << " " << out[i].xRoad << " " << out[i].xDist << "\n";
+    //}
+    
     return out;
 }
 
@@ -93,12 +109,8 @@ int main()
         exit(1);
     }
 
-    int size = 2;
-    town towns[100];
-
-    string lines[100];
-
     vector<town> t = readFile(f);
+
     //cout << file;
 
     // if (argc != 3)

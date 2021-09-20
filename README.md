@@ -17,6 +17,7 @@ These objects should be stored in a hash table, indexed by their name
     and state jointly.
 
 After reading the data, the program should enter an interactive loop:
+
     if the user enters 
        S placename state
     the computer provides all information known for the indicated place.
